@@ -1,0 +1,96 @@
+register a? 1
+register b 1?
+register a 1
+register a 1
+register b 1
+list_users
+register c 1
+remove c 2
+remove c 1
+list_users
+login a 1
+scoreboard
+help
+logout
+help
+login b 1
+new_game b 100
+new_game a -1
+new_game a 0
+select 2,2
+move 4,2
+show_board
+select 2,4
+move 2,5
+show_board
+next_turn
+show_turn
+show_board
+select 7,3
+move 5,3
+show_board
+show_turn
+next_turn
+select 4,2
+move 5,3
+show_killed
+show_turn
+show_killed
+show_killed -all
+show_moves
+show_moves -all
+next_turn
+show_turn
+show_killed
+show_killed -all
+show_moves
+show_moves -all
+show_board
+move 4,2
+select 7,4
+move 5,4
+show_board
+next_turn
+select 5,3
+move 4,3
+move 6,3
+show_board
+next_turn
+select 8,5
+move 7,4
+show_board
+undo
+show_board
+select 7,5
+move 5,5
+show_board
+help
+undo_number
+next_turn
+select 2,8
+move 4,8
+show_board
+undo
+move 3,8
+show_board
+next_turn
+select 8,5
+move 7,4
+next_turn
+select 6,3
+move 7,4
+show_killed -all
+show_moves -all
+show_killed
+show_moves
+show_turn
+show_board
+next_turn
+help
+scoreboard
+new_game a 1
+forfeit
+scoreboard
+logout
+exit
+
