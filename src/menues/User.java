@@ -6,6 +6,8 @@ import java.util.regex.Pattern;
 
 public class User {
     private static ArrayList<User> allUsers = new ArrayList<>();
+    private static java.util.ArrayList<User> scoreboard;
+
     private String username;
     private String password;
     private int score;
@@ -36,12 +38,16 @@ public class User {
         return null;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     public boolean checkPassword(String inputPassword) {
         return this.password.equals(inputPassword);
     }
 
     public static boolean checkUserPassValidation(String inputUsername ,String inputPassword) {
-        Pattern userPassPattern = Pattern.compile("[a-zA-Z0-9]+");
+        Pattern userPassPattern = Pattern.compile("^[a-zA-Z0-9]+$");
         Matcher userPassMatcher = userPassPattern.matcher(inputUsername);
         if (!userPassMatcher.find()){
             System.out.println("username format is invalid");
@@ -91,7 +97,7 @@ public class User {
             listCopy.remove(tempMaxRank);
             sortedList.add(tempMaxRank);
         }
-        UserMenu.setScoreboard(sortedList);
+        scoreboard = sortedList;
     }
 
     private static void sortUsersList() {
@@ -102,7 +108,7 @@ public class User {
         for (int i = 0; i < allUsers.size(); i++) {
             tempMaxRank = null;
             for (User user : listCopy) {
-                if (tempMaxRank == null || user.username.compareTo(tempMaxRank.username) > 0)
+                if (tempMaxRank == null || user.username.compareTo(tempMaxRank.username) < 0)
                     tempMaxRank = user;
             }
             listCopy.remove(tempMaxRank);

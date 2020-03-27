@@ -23,6 +23,7 @@ public class RegisterMenu extends Menu {
                 return;
             }
             processLogin(splitCommand[1], splitCommand[2]);
+            return;
         }
         if (splitCommand[0].equals("remove") && splitCommand.length == 3) {
             if (!User.checkUserPassValidation(splitCommand[1], splitCommand[2]))
@@ -69,6 +70,7 @@ public class RegisterMenu extends Menu {
             System.out.println("incorrect password");
             return;
         }
+        System.out.println("removed " + User.getUserByName(username).getUsername() + " successfully");
         User.getAllUsers().remove(User.getUserByName(username));
     }
 

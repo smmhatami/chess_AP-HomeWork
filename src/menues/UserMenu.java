@@ -4,14 +4,9 @@ import java.util.ArrayList;
 
 public class UserMenu extends Menu {
     private User activeUser;
-    private static java.util.ArrayList<User> scoreboard;
 
     public UserMenu(User activeUser) {
         this.activeUser = activeUser;
-    }
-
-    public static void setScoreboard(ArrayList<User> scoreboard) {
-        UserMenu.scoreboard = scoreboard;
     }
 
     public void processInputCommand(String input) {
