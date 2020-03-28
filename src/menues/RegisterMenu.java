@@ -3,6 +3,10 @@ package menues;
 public class RegisterMenu extends Menu {
 
     public void processInputCommand(String command) {
+        if (command.endsWith(" ")) {
+            System.out.println("invalid command");
+            return;
+        }
         String[] splitCommand = command.split(" ");
         if (splitCommand[0].equals("register") && splitCommand.length == 3) {
             if (!User.checkUserPassValidation(splitCommand[1], splitCommand[2]))

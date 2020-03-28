@@ -11,6 +11,10 @@ public class UserMenu extends Menu {
     }
 
     public void processInputCommand(String command) {
+        if (command.endsWith(" ")) {
+            System.out.println("invalid command");
+            return;
+        }
         String[] splitCommand = command.split(" ");
         if (splitCommand[0].equals("new_game") && splitCommand.length == 3) {
             Pattern numPattern = Pattern.compile("^-?\\d+$");

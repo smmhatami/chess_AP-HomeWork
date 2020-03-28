@@ -14,6 +14,10 @@ public class GameMenu extends Menu {
     }
 
     public void processInputCommand(String command) {
+        if (command.endsWith(" ")) {
+            System.out.println("invalid command");
+            return;
+        }
         String[] splitCommand = command.split(" ");
         if (splitCommand[0].equals("select") && splitCommand.length == 2) {
             Pattern positionPattern = Pattern.compile("^-?\\d+,-?\\d+$");
