@@ -17,7 +17,7 @@ public class User {
 
     @Override
     public String toString() {
-        return username + " " + score + " " + winsCount + " " + drawsCount + "" + loosesCount;
+        return username + " " + score + " " + winsCount + " " + drawsCount + " " + loosesCount;
     }
 
     public User(String username, String password) {
@@ -50,15 +50,15 @@ public class User {
         return this.password.equals(inputPassword);
     }
 
-    public static boolean checkUserPassValidation(String inputUsername ,String inputPassword) {
+    public static boolean checkUserPassValidation(String inputUsername, String inputPassword) {
         Pattern userPassPattern = Pattern.compile("^[a-zA-Z0-9]+$");
         Matcher userPassMatcher = userPassPattern.matcher(inputUsername);
-        if (!userPassMatcher.find()){
+        if (!userPassMatcher.find()) {
             System.out.println("username format is invalid");
             return false;
         }
         userPassMatcher = userPassPattern.matcher(inputPassword);
-        if (!userPassMatcher.find()){
+        if (!userPassMatcher.find()) {
             System.out.println("password format is invalid");
             return false;
         }
@@ -84,7 +84,7 @@ public class User {
             return this.drawsCount > otherUser.drawsCount;
         if (this.loosesCount != otherUser.loosesCount)
             return this.loosesCount < otherUser.loosesCount;
-        return this.username.compareTo(otherUser.username) >= 0;
+        return this.username.compareTo(otherUser.username) < 0;
     }
 
     public static void sortScoreBoard() {
@@ -120,6 +120,7 @@ public class User {
         }
         allUsers = sortedList;
     }
+
     public static void printUsersList() {
         sortUsersList();
         for (User user : allUsers) {

@@ -13,7 +13,7 @@ public class UserMenu extends Menu {
     public void processInputCommand(String command) {
         String[] splitCommand = command.split(" ");
         if (splitCommand[0].equals("new_game") && splitCommand.length == 3) {
-            Pattern numPattern = Pattern.compile("^\\d+$");
+            Pattern numPattern = Pattern.compile("^-?\\d+$");
             if (numPattern.matcher(splitCommand[2]).find()) {
                 if (!User.checkUserPassValidation(splitCommand[1], "noPass"))
                     return;
@@ -34,22 +34,22 @@ public class UserMenu extends Menu {
                 return;
             }
         }
-        if (splitCommand[0].equals("scoreboard") && splitCommand.length == 1){
+        if (splitCommand[0].equals("scoreboard") && splitCommand.length == 1) {
             User.sortScoreBoard();
             for (User user : User.getScoreboard()) {
                 System.out.println(user);
             }
             return;
         }
-        if (splitCommand[0].equals("list_users") && splitCommand.length == 1){
+        if (splitCommand[0].equals("list_users") && splitCommand.length == 1) {
             User.printUsersList();
             return;
         }
-        if (splitCommand[0].equals("help") && splitCommand.length == 1){
+        if (splitCommand[0].equals("help") && splitCommand.length == 1) {
             printHelp();
             return;
         }
-        if (splitCommand[0].equals("logout") && splitCommand.length == 1){
+        if (splitCommand[0].equals("logout") && splitCommand.length == 1) {
             System.out.println("logout successful");
             logout();
             return;

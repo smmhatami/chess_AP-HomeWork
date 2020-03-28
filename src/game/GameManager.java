@@ -17,12 +17,13 @@ public class GameManager {
         board = new BoardUnitSquare[8][8];
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
-                board[i][j].setPosition(i, j);
+                board[i][j] = new BoardUnitSquare(i ,j);
             }
         }
         this.whitePlayer = new Player(whiteUser, "w");
         this.blackPlayer = new Player(blackUser, "b");
         this.limit = limit;
+        putInitialChessmen();
     }
 
     public String processSquareSelecting(int posX, int posY) {
@@ -65,5 +66,9 @@ public class GameManager {
     }
 
     private void endGame(int player1Score, int player2Score) {
+    }
+
+    private static void putInitialChessmen(){
+
     }
 }
