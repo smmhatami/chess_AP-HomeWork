@@ -7,7 +7,7 @@ public class Move {
     private Chessman movedChessman;
     private Chessman destroyedChessman;
 
-    public Move(BoardUnitSquare startSquare, BoardUnitSquare endSquare, Chessman movedChessman, Chessman destroyedChessman , Player moverPlayer) {
+    public Move(BoardUnitSquare startSquare, BoardUnitSquare endSquare, Chessman movedChessman, Chessman destroyedChessman, Player moverPlayer) {
         this.startSquare = startSquare;
         this.endSquare = endSquare;
         this.movedChessman = movedChessman;
@@ -17,7 +17,7 @@ public class Move {
 
     @Override
     public String toString() {
-        String noDestroy =  movedChessman + " " + startSquare + " to " + endSquare ;
+        String noDestroy = movedChessman + " " + startSquare + " to " + endSquare;
         if (destroyedChessman == null)
             return noDestroy;
         return noDestroy + " destroyed " + destroyedChessman;
@@ -31,11 +31,12 @@ public class Move {
         return destroyedChessman;
     }
 
-    public void undoMove(){
+    public void undoMove() {
         startSquare.setCurrentChessman(movedChessman);
         endSquare.setCurrentChessman(destroyedChessman);
         movedChessman.changeMoved(-1);
-        destroyedChessman.setDeathSpot(null);
+        if (destroyedChessman != null)
+            destroyedChessman.setDeathSpot(null);
     }
 
 }

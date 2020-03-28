@@ -34,6 +34,7 @@ public class GameManager {
         selectedSquare = null;
         moveDone = false;
         undoUsed = false;
+        allGameMoves = new ArrayList<>();
     }
 
     public BoardUnitSquare[][] getBoard() {
@@ -43,7 +44,7 @@ public class GameManager {
     public String processSquareSelecting(int posX, int posY) {
         BoardUnitSquare inputSquare = getSquareByPosition(posX, posY);
         if (inputSquare.getChessmanPlayer() != activePlayer) {
-            if (inputSquare.getChessmanPlayer() == null)
+            if (inputSquare.getCurrentChessman() == null)
                 return "no piece on this spot";
             return "you can only select one of your pieces";
         }
@@ -76,7 +77,8 @@ public class GameManager {
         BoardUnitSquare destinationSquare = getSquareByPosition(destinationPosX, destinationPosY);
         if (selectedSquare.getCurrentChessman().isMovePossible(selectedSquare, destinationSquare)) {
             setMoveDone(true);
-            allGameMoves.add(new Move(selectedSquare, destinationSquare, selectedSquare.getCurrentChessman(), destinationSquare.getCurrentChessman(), activePlayer));
+            Move lastMove = new Move(selectedSquare, destinationSquare, selectedSquare.getCurrentChessman(), destinationSquare.getCurrentChessman(), activePlayer);
+            allGameMoves.add(lastMove);
             if (destinationSquare.getCurrentChessman() != null) {
                 if (destinationSquare.getCurrentChessman().getType() == 'K')
                     activePlayer.isWon = true;
@@ -86,7 +88,7 @@ public class GameManager {
             destinationSquare.setCurrentChessman(selectedSquare.getCurrentChessman());
             destinationSquare.getCurrentChessman().changeMoved(1);
             selectedSquare.setCurrentChessman(null);
-            if (destinationSquare.getCurrentChessman() == null)
+            if (lastMove.getDestroyedChessman() == null)
                 return "moved";
             return "rival piece destroyed";
 
@@ -176,9 +178,9 @@ public class GameManager {
 
         for (int i = 7; i >= 0; i--) {
             BoardUnitSquare[] boardRow = board[i];
-            StringBuilder row = new StringBuilder("");
+            StringBuilder row = new StringBuilder();
             for (BoardUnitSquare square : boardRow) {
-                if (square == null)
+                if (square.getCurrentChessman() == null)
                     row.append("  |");
                 else
                     row.append(square.getCurrentChessman() + "|");
@@ -244,7 +246,7 @@ public class GameManager {
         board[7][6].setCurrentChessman(new Chessman(blackPlayer, 'N', this));
         board[7][2].setCurrentChessman(new Chessman(blackPlayer, 'B', this));
         board[7][5].setCurrentChessman(new Chessman(blackPlayer, 'B', this));
-        board[7][4].setCurrentChessman(new Chessman(blackPlayer, 'Q', this));
-        board[7][3].setCurrentChessman(new Chessman(blackPlayer, 'K', this));
+        board[7][3].setCurrentChessman(new Chessman(blackPlayer, 'Q', this));
+        board[7][4].setCurrentChessman(new Chessman(blackPlayer, 'K', this));
     }
 }

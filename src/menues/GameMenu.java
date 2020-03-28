@@ -46,7 +46,7 @@ public class GameMenu extends Menu {
             System.out.println(gameManager.processUndo());
             return;
         }
-        if (splitCommand[0].equals("undo_remaining") && splitCommand.length == 1) {
+        if (splitCommand[0].equals("undo_number") && splitCommand.length == 1) {
             System.out.println(gameManager.printUndoRemaining());
             return;
         }
@@ -74,7 +74,7 @@ public class GameMenu extends Menu {
             printHelp();
             return;
         }
-        if (splitCommand[0].equals("forfiet") && splitCommand.length == 1) {
+        if (splitCommand[0].equals("forfeit") && splitCommand.length == 1) {
             processForfiet();
             return;
         }
@@ -123,7 +123,8 @@ public class GameMenu extends Menu {
     }
 
     private void processForfiet() {
-        gameManager.processForfiet();
         System.out.println("you have forfeited");
+        gameManager.processForfiet();
+
     }
 }
