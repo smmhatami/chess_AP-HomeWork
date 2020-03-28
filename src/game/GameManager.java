@@ -1,5 +1,7 @@
 package game;
 
+import menues.User;
+
 public class GameManager {
     private BoardUnitSquare[][] board;
     private Player whitePlayer;
@@ -11,15 +13,16 @@ public class GameManager {
     private java.util.ArrayList<Chessman> killedChessmen;
     private int limit;
 
-    public GameManager(Player whitePlayer, Player blackPlayer) {
+    public GameManager(User whiteUser, User blackUser, int limit) {
         board = new BoardUnitSquare[8][8];
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 board[i][j].setPosition(i, j);
             }
         }
-        this.whitePlayer = whitePlayer;
-        this.blackPlayer = blackPlayer;
+        this.whitePlayer = new Player(whiteUser, "w");
+        this.blackPlayer = new Player(blackUser, "b");
+        this.limit = limit;
     }
 
     public String processSquareSelecting(int posX, int posY) {

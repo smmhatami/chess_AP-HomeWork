@@ -30,6 +30,10 @@ public class User {
         this.winsCount = 0;
     }
 
+    public static ArrayList<User> getScoreboard() {
+        return scoreboard;
+    }
+
     public static User getUserByName(String username) {
         for (User user : allUsers) {
             if (user.username.equals(username))
@@ -83,7 +87,7 @@ public class User {
         return this.username.compareTo(otherUser.username) >= 0;
     }
 
-    private static void sortScoreBoard() {
+    public static void sortScoreBoard() {
         ArrayList<User> listCopy = new ArrayList<>();
         listCopy.addAll(allUsers);
         ArrayList<User> sortedList = new ArrayList<>();

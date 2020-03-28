@@ -1,7 +1,17 @@
 package menues;
 
+import game.GameManager;
+
+import javax.jws.soap.SOAPBinding;
+
 public class GameMenu extends Menu {
     private game.GameManager gameManager;
+    private int gameLimit;
+
+    public GameMenu(User whitePlayer, User blackPlayer, int gameLimit) {
+        this.gameLimit = gameLimit;
+        this.gameManager = new GameManager(whitePlayer, blackPlayer, gameLimit);
+    }
 
     public void processInputCommand(String input) {
     }
