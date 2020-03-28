@@ -104,6 +104,22 @@ public class User {
         scoreboard = sortedList;
     }
 
+    public void addScore(int amount) {
+        this.score += amount;
+    }
+
+    public void addWinsCount() {
+        this.winsCount++;
+    }
+
+    public void addLoosesCount() {
+        this.loosesCount++;
+    }
+
+    public void addDrawsCount() {
+        this.drawsCount++;
+    }
+
     private static void sortUsersList() {
         ArrayList<User> listCopy = new ArrayList<>();
         listCopy.addAll(allUsers);
