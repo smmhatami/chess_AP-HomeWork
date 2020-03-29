@@ -99,7 +99,7 @@ public class Chessman {
             }
         }
         if (rightDistance < 0) {
-            while ((square = square.getSquareFrontRow(-1)) != destinationSquare) {
+            while ((square = square.getSquareRightRow(-1)) != destinationSquare) {
                 if (square.getCurrentChessman() != null)
                     return false;
             }
@@ -161,10 +161,10 @@ public class Chessman {
     }
 
     private static int tellRightDistance(BoardUnitSquare startSquare, BoardUnitSquare destinationSquare) {
-        return startSquare.getPosition()[1] - destinationSquare.getPosition()[1];
+        return destinationSquare.getPosition()[1] - startSquare.getPosition()[1];
     }
 
     private static int tellFrontDistance(BoardUnitSquare startSquare, BoardUnitSquare destinationSquare) {
-        return startSquare.getPosition()[0] - destinationSquare.getPosition()[0];
+        return destinationSquare.getPosition()[0] - startSquare.getPosition()[0];
     }
 }

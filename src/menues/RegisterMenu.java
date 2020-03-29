@@ -3,7 +3,7 @@ package menues;
 public class RegisterMenu extends Menu {
 
     public void processInputCommand(String command) {
-        if (command.endsWith(" ")) {
+        if (command.endsWith(" ") || command.startsWith(" ")) {
             System.out.println("invalid command");
             return;
         }
