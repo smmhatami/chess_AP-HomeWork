@@ -34,9 +34,14 @@ public class Move {
     public void undoMove() {
         startSquare.setCurrentChessman(movedChessman);
         endSquare.setCurrentChessman(destroyedChessman);
+        movedChessman.setCurrentPosition(startSquare);
         movedChessman.changeMoved(-1);
         if (destroyedChessman != null)
             destroyedChessman.setDeathSpot(null);
+    }
+
+    public boolean didDestroyChessman() {
+        return this.destroyedChessman != null;
     }
 
 }

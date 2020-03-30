@@ -10,6 +10,5 @@ public class Main {
         while (Menu.getActiveMenu() != null) {
             Menu.getActiveMenu().processInputCommand(scanner.nextLine());
         }
-
     }
 }

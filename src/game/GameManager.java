@@ -11,7 +11,7 @@ public class GameManager {
     private Player whitePlayer;
     private Player blackPlayer;
     private Player activePlayer;
-    private BoardUnitSquare selectedSquare;
+    private Chessman selectedChessman;
     private java.util.ArrayList<Move> allGameMoves;
     private boolean moveDone;
     private java.util.ArrayList<Chessman> killedChessmen;
@@ -31,31 +31,27 @@ public class GameManager {
         this.limit = limit == 0 ? -1 : limit;
         putInitialChessmen();
         activePlayer = whitePlayer;
-        selectedSquare = null;
+        selectedChessman = null;
         moveDone = false;
         undoUsed = false;
         allGameMoves = new ArrayList<>();
     }
 
-    public BoardUnitSquare[][] getBoard() {
-        return board;
-    }
-
-    public String processSquareSelecting(int posX, int posY) {
+    public String processChessmanSelecting(int posX, int posY) {
         BoardUnitSquare inputSquare = getSquareByPosition(posX, posY);
         if (inputSquare.getChessmanPlayer() != activePlayer) {
             if (inputSquare.getCurrentChessman() == null)
                 return "no piece on this spot";
             return "you can only select one of your pieces";
         }
-        selectedSquare = inputSquare;
+        selectedChessman = inputSquare.getCurrentChessman();
         return "selected";
     }
 
     public String deselect() {
-        if (selectedSquare == null)
+        if (selectedChessman == null)
             return "no piece is selected";
-        selectedSquare = null;
+        selectedChessman = null;
         return "deselected";
     }
 
@@ -72,12 +68,12 @@ public class GameManager {
     }
 
     public String processMove(int destinationPosX, int destinationPosY) {
-        if (selectedSquare == null)
+        if (selectedChessman == null)
             return "do not have any selected piece";
         BoardUnitSquare destinationSquare = getSquareByPosition(destinationPosX, destinationPosY);
-        if (selectedSquare.getCurrentChessman().isMovePossible(selectedSquare, destinationSquare)) {
+        if (selectedChessman.isMovePossible(selectedChessman.getCurrentPosition(), destinationSquare)) {
             setMoveDone(true);
-            Move lastMove = new Move(selectedSquare, destinationSquare, selectedSquare.getCurrentChessman(), destinationSquare.getCurrentChessman(), activePlayer);
+            Move lastMove = new Move(selectedChessman.getCurrentPosition(), destinationSquare, selectedChessman, destinationSquare.getCurrentChessman(), activePlayer);
             allGameMoves.add(lastMove);
             if (destinationSquare.getCurrentChessman() != null) {
                 if (destinationSquare.getCurrentChessman().getType() == 'K')
@@ -85,10 +81,11 @@ public class GameManager {
                 killedChessmen.add(destinationSquare.getCurrentChessman());
                 destinationSquare.getCurrentChessman().setDeathSpot(destinationSquare);
             }
-            destinationSquare.setCurrentChessman(selectedSquare.getCurrentChessman());
-            destinationSquare.getCurrentChessman().changeMoved(1);
-            selectedSquare.setCurrentChessman(null);
-            if (lastMove.getDestroyedChessman() == null)
+            destinationSquare.setCurrentChessman(selectedChessman);
+            selectedChessman.changeMoved(1);
+            selectedChessman.getCurrentPosition().setCurrentChessman(null);
+            selectedChessman.setCurrentPosition(destinationSquare);
+            if (!lastMove.didDestroyChessman())
                 return "moved";
             return "rival piece destroyed";
 
@@ -136,8 +133,9 @@ public class GameManager {
         undoUsed = true;
         moveDone = false;
         allGameMoves.get(allGameMoves.size() - 1).undoMove();
+        if (allGameMoves.get(allGameMoves.size() - 1).didDestroyChessman())
+            killedChessmen.remove(allGameMoves.get(allGameMoves.size() - 1).getDestroyedChessman());
         allGameMoves.remove(allGameMoves.size() - 1);
-        killedChessmen.remove(allGameMoves.get(allGameMoves.size() - 1).getDestroyedChessman());
         activePlayer.isWon = false;
         return "undo completed";
     }
@@ -183,7 +181,7 @@ public class GameManager {
                 if (square.getCurrentChessman() == null)
                     row.append("  |");
                 else
-                    row.append(square.getCurrentChessman() + "|");
+                    row.append(square.getCurrentChessman()).append("|");
             }
             System.out.println(row);
         }
@@ -212,12 +210,12 @@ public class GameManager {
 
     private void switchActivePlayer() {
         activePlayer = activePlayer == whitePlayer ? blackPlayer : whitePlayer;
-        selectedSquare = null;
+        selectedChessman = null;
         setMoveDone(false);
         undoUsed = false;
     }
 
-    public void processForfiet() {
+    public void processForfeit() {
         if (activePlayer == whitePlayer)
             endGame(-1, 2);
         else
@@ -227,26 +225,26 @@ public class GameManager {
     private void putInitialChessmen() {
         //Pawns
         for (int i = 0; i < 8; i++) {
-            board[1][i].setCurrentChessman(new Chessman(whitePlayer, 'P', this));
-            board[6][i].setCurrentChessman(new Chessman(blackPlayer, 'P', this));
+            board[1][i].setCurrentChessman(new Chessman(whitePlayer, 'P', board[1][i]));
+            board[6][i].setCurrentChessman(new Chessman(blackPlayer, 'P', board[6][i]));
         }
         // White back
-        board[0][0].setCurrentChessman(new Chessman(whitePlayer, 'R', this));
-        board[0][7].setCurrentChessman(new Chessman(whitePlayer, 'R', this));
-        board[0][1].setCurrentChessman(new Chessman(whitePlayer, 'N', this));
-        board[0][6].setCurrentChessman(new Chessman(whitePlayer, 'N', this));
-        board[0][2].setCurrentChessman(new Chessman(whitePlayer, 'B', this));
-        board[0][5].setCurrentChessman(new Chessman(whitePlayer, 'B', this));
-        board[0][3].setCurrentChessman(new Chessman(whitePlayer, 'Q', this));
-        board[0][4].setCurrentChessman(new Chessman(whitePlayer, 'K', this));
+        board[0][0].setCurrentChessman(new Chessman(whitePlayer, 'R', board[0][0]));
+        board[0][7].setCurrentChessman(new Chessman(whitePlayer, 'R', board[0][7]));
+        board[0][1].setCurrentChessman(new Chessman(whitePlayer, 'N', board[0][1]));
+        board[0][6].setCurrentChessman(new Chessman(whitePlayer, 'N', board[0][6]));
+        board[0][2].setCurrentChessman(new Chessman(whitePlayer, 'B', board[0][2]));
+        board[0][5].setCurrentChessman(new Chessman(whitePlayer, 'B', board[0][5]));
+        board[0][3].setCurrentChessman(new Chessman(whitePlayer, 'Q', board[0][3]));
+        board[0][4].setCurrentChessman(new Chessman(whitePlayer, 'K', board[0][4]));
         // Black back
-        board[7][0].setCurrentChessman(new Chessman(blackPlayer, 'R', this));
-        board[7][7].setCurrentChessman(new Chessman(blackPlayer, 'R', this));
-        board[7][1].setCurrentChessman(new Chessman(blackPlayer, 'N', this));
-        board[7][6].setCurrentChessman(new Chessman(blackPlayer, 'N', this));
-        board[7][2].setCurrentChessman(new Chessman(blackPlayer, 'B', this));
-        board[7][5].setCurrentChessman(new Chessman(blackPlayer, 'B', this));
-        board[7][3].setCurrentChessman(new Chessman(blackPlayer, 'Q', this));
-        board[7][4].setCurrentChessman(new Chessman(blackPlayer, 'K', this));
+        board[7][0].setCurrentChessman(new Chessman(blackPlayer, 'R', board[7][0]));
+        board[7][7].setCurrentChessman(new Chessman(blackPlayer, 'R', board[7][7]));
+        board[7][1].setCurrentChessman(new Chessman(blackPlayer, 'N', board[7][1]));
+        board[7][6].setCurrentChessman(new Chessman(blackPlayer, 'N', board[7][6]));
+        board[7][2].setCurrentChessman(new Chessman(blackPlayer, 'B', board[7][2]));
+        board[7][5].setCurrentChessman(new Chessman(blackPlayer, 'B', board[7][5]));
+        board[7][3].setCurrentChessman(new Chessman(blackPlayer, 'Q', board[7][3]));
+        board[7][4].setCurrentChessman(new Chessman(blackPlayer, 'K', board[7][4]));
     }
 }

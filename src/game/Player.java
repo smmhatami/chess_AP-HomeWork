@@ -18,6 +18,7 @@ public class Player {
     public int getUndoRemaining() {
         return undoRemaining;
     }
+
     public void setUndoRemaining(int undoRemaining) {
         this.undoRemaining = undoRemaining;
     }
@@ -25,7 +26,8 @@ public class Player {
     public char getColor() {
         return color;
     }
-    public void addUserScore(int amount){
+
+    public void addUserScore(int amount) {
         this.user.addScore(amount);
     }
 

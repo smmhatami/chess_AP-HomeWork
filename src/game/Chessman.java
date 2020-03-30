@@ -3,24 +3,33 @@ package game;
 public class Chessman {
     private Player owner;
     private char type;
-    private BoardUnitSquare[][] gameBoard;
     private int movesDone;
     private BoardUnitSquare deathSpot;
+    private BoardUnitSquare currentPosition;
+
 
     public Player getOwner() {
         return owner;
     }
 
-    public Chessman(Player owner, char type, GameManager gameManager) {
+    public Chessman(Player owner, char type, BoardUnitSquare currentPosition) {
         this.owner = owner;
         this.type = type;
-        gameBoard = gameManager.getBoard();
         movesDone = 0;
         deathSpot = null;
+        this.currentPosition = currentPosition;
+    }
+
+    public void setCurrentPosition(BoardUnitSquare currentPosition) {
+        this.currentPosition = currentPosition;
     }
 
     public void changeMoved(int count) {
         movesDone += count;
+    }
+
+    public BoardUnitSquare getCurrentPosition() {
+        return currentPosition;
     }
 
     public boolean isMovePossible(BoardUnitSquare startSquare, BoardUnitSquare destinationSquare) {
@@ -34,13 +43,13 @@ public class Chessman {
         if (type == 'R')
             return moveValidateRook(startSquare, destinationSquare, frontDistance, rightDistance);
         if (type == 'N')
-            return moveValidateKnight(startSquare, destinationSquare, frontDistance, rightDistance);
+            return moveValidateKnight(frontDistance, rightDistance);
         if (type == 'B')
             return moveValidateBishop(startSquare, destinationSquare, frontDistance, rightDistance);
         if (type == 'Q')
             return moveValidateQueen(startSquare, destinationSquare, frontDistance, rightDistance);
         //if (type == 'K')
-        return moveValidateKing(startSquare, destinationSquare, frontDistance, rightDistance);
+        return moveValidateKing(frontDistance, rightDistance);
     }
 
     @Override
@@ -107,7 +116,7 @@ public class Chessman {
         return true;
     }
 
-    private boolean moveValidateKing(BoardUnitSquare startSquare, BoardUnitSquare destinationSquare, int frontDistance, int rightDistance) {
+    private boolean moveValidateKing(int frontDistance, int rightDistance) {
         return frontDistance <= 1 && frontDistance >= -1 && rightDistance <= 1 && rightDistance >= -1;
     }
 
@@ -156,7 +165,7 @@ public class Chessman {
         return false;
     }
 
-    private boolean moveValidateKnight(BoardUnitSquare startSquare, BoardUnitSquare destinationSquare, int frontDistance, int rightDistance) {
+    private boolean moveValidateKnight(int frontDistance, int rightDistance) {
         return frontDistance * rightDistance == 2 || frontDistance * rightDistance == -2;
     }
 

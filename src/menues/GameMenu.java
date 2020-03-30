@@ -6,10 +6,8 @@ import java.util.regex.Pattern;
 
 public class GameMenu extends Menu {
     private game.GameManager gameManager;
-    private int gameLimit;
 
     public GameMenu(User whitePlayer, User blackPlayer, int gameLimit) {
-        this.gameLimit = gameLimit;
         this.gameManager = new GameManager(whitePlayer, blackPlayer, gameLimit);
     }
 
@@ -79,7 +77,7 @@ public class GameMenu extends Menu {
             return;
         }
         if (splitCommand[0].equals("forfeit") && splitCommand.length == 1) {
-            processForfiet();
+            processForfeit();
             return;
         }
         System.out.println("invalid command");
@@ -93,7 +91,7 @@ public class GameMenu extends Menu {
             System.out.println("wrong coordination");
             return;
         }
-        System.out.println(gameManager.processSquareSelecting(posX, posY));
+        System.out.println(gameManager.processChessmanSelecting(posX, posY));
     }
 
     private void processMove(String destinationString) {
@@ -126,9 +124,8 @@ public class GameMenu extends Menu {
                 "forfeit");
     }
 
-    private void processForfiet() {
+    private void processForfeit() {
         System.out.println("you have forfeited");
-        gameManager.processForfiet();
-
+        gameManager.processForfeit();
     }
 }

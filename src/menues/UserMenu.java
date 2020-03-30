@@ -61,10 +61,6 @@ public class UserMenu extends Menu {
         System.out.println("invalid command");
     }
 
-    public User getActiveUser() {
-        return activeUser;
-    }
-
     private void processNewGame(User opponent, int limit) {
         Menu.setActiveMenu(new GameMenu(activeUser, opponent, limit));
     }

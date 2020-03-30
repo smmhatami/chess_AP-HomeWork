@@ -66,9 +66,7 @@ public class User {
     }
 
     public static boolean userExists(String username) {
-        if (getUserByName(username) == null)
-            return false;
-        return true;
+        return getUserByName(username) != null;
     }
 
     public static ArrayList<User> getAllUsers() {
@@ -88,8 +86,7 @@ public class User {
     }
 
     public static void sortScoreBoard() {
-        ArrayList<User> listCopy = new ArrayList<>();
-        listCopy.addAll(allUsers);
+        ArrayList<User> listCopy = new ArrayList<>(allUsers);
         ArrayList<User> sortedList = new ArrayList<>();
         User tempMaxRank;
         for (int i = 0; i < allUsers.size(); i++) {
@@ -121,8 +118,7 @@ public class User {
     }
 
     private static void sortUsersList() {
-        ArrayList<User> listCopy = new ArrayList<>();
-        listCopy.addAll(allUsers);
+        ArrayList<User> listCopy = new ArrayList<>(allUsers);
         ArrayList<User> sortedList = new ArrayList<>();
         User tempMaxRank;
         for (int i = 0; i < allUsers.size(); i++) {
