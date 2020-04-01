@@ -46,23 +46,23 @@ public class User {
         return username;
     }
 
-    public boolean checkPassword(String inputPassword) {
-        return this.password.equals(inputPassword);
+    public boolean isPasswordWrong(String inputPassword) {
+        return !this.password.equals(inputPassword);
     }
 
-    public static boolean checkUserPassValidation(String inputUsername, String inputPassword) {
-        Pattern userPassPattern = Pattern.compile("^[a-zA-Z0-9]+$");
+    public static boolean isUserPassInvalid(String inputUsername, String inputPassword) {
+        Pattern userPassPattern = Pattern.compile("^[a-zA-Z0-9_]+$");
         Matcher userPassMatcher = userPassPattern.matcher(inputUsername);
         if (!userPassMatcher.find()) {
             System.out.println("username format is invalid");
-            return false;
+            return true;
         }
         userPassMatcher = userPassPattern.matcher(inputPassword);
         if (!userPassMatcher.find()) {
             System.out.println("password format is invalid");
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     public static boolean userExists(String username) {

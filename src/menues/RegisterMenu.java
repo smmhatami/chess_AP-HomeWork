@@ -9,7 +9,7 @@ public class RegisterMenu extends Menu {
         }
         String[] splitCommand = command.split(" ");
         if (splitCommand[0].equals("register") && splitCommand.length == 3) {
-            if (!User.checkUserPassValidation(splitCommand[1], splitCommand[2]))
+            if (User.isUserPassInvalid(splitCommand[1], splitCommand[2]))
                 return;
             if (User.userExists(splitCommand[1])) {
                 System.out.println("a user exists with this username");
@@ -20,7 +20,7 @@ public class RegisterMenu extends Menu {
             return;
         }
         if (splitCommand[0].equals("login") && splitCommand.length == 3) {
-            if (!User.checkUserPassValidation(splitCommand[1], splitCommand[2]))
+            if (User.isUserPassInvalid(splitCommand[1], splitCommand[2]))
                 return;
             if (!User.userExists(splitCommand[1])) {
                 System.out.println("no user exists with this username");
@@ -30,7 +30,7 @@ public class RegisterMenu extends Menu {
             return;
         }
         if (splitCommand[0].equals("remove") && splitCommand.length == 3) {
-            if (!User.checkUserPassValidation(splitCommand[1], splitCommand[2]))
+            if (User.isUserPassInvalid(splitCommand[1], splitCommand[2]))
                 return;
             if (!User.userExists(splitCommand[1])) {
                 System.out.println("no user exists with this username");
@@ -61,7 +61,7 @@ public class RegisterMenu extends Menu {
     }
 
     private void processLogin(String username, String password) {
-        if (!User.getUserByName(username).checkPassword(password)) {
+        if (User.getUserByName(username).isPasswordWrong(password)) {
             System.out.println("incorrect password");
             return;
         }
@@ -70,11 +70,11 @@ public class RegisterMenu extends Menu {
     }
 
     private void processRemove(String username, String password) {
-        if (!User.getUserByName(username).checkPassword(password)) {
+        if (User.getUserByName(username).isPasswordWrong(password)) {
             System.out.println("incorrect password");
             return;
         }
-        System.out.println("removed " + User.getUserByName(username).getUsername() + " successfully");
+        System.out.println("removed " + username + " successfully");
         User.getAllUsers().remove(User.getUserByName(username));
     }
 

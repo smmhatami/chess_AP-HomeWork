@@ -36,8 +36,10 @@ public class Move {
         endSquare.setCurrentChessman(destroyedChessman);
         movedChessman.setCurrentPosition(startSquare);
         movedChessman.changeMoved(-1);
-        if (destroyedChessman != null)
+        if (destroyedChessman != null) {
             destroyedChessman.setDeathSpot(null);
+            destroyedChessman.setCurrentPosition(endSquare);
+        }
     }
 
     public boolean didDestroyChessman() {

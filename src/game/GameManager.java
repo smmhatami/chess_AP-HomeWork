@@ -21,6 +21,7 @@ public class GameManager {
     public GameManager(User whiteUser, User blackUser, int limit) {
         board = new BoardUnitSquare[8][8];
         killedChessmen = new ArrayList<>();
+        allGameMoves = new ArrayList<>();
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 board[i][j] = new BoardUnitSquare(i, j, board);
@@ -34,7 +35,6 @@ public class GameManager {
         selectedChessman = null;
         moveDone = false;
         undoUsed = false;
-        allGameMoves = new ArrayList<>();
     }
 
     public String processChessmanSelecting(int posX, int posY) {
@@ -132,10 +132,11 @@ public class GameManager {
         activePlayer.setUndoRemaining(activePlayer.getUndoRemaining() - 1);
         undoUsed = true;
         moveDone = false;
-        allGameMoves.get(allGameMoves.size() - 1).undoMove();
-        if (allGameMoves.get(allGameMoves.size() - 1).didDestroyChessman())
-            killedChessmen.remove(allGameMoves.get(allGameMoves.size() - 1).getDestroyedChessman());
-        allGameMoves.remove(allGameMoves.size() - 1);
+        Move lastMove = allGameMoves.get(allGameMoves.size() - 1);
+        lastMove.undoMove();
+        if (lastMove.didDestroyChessman())
+            killedChessmen.remove(lastMove.getDestroyedChessman());
+        allGameMoves.remove(lastMove);
         activePlayer.isWon = false;
         return "undo completed";
     }

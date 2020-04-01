@@ -39,7 +39,7 @@ public class Chessman {
         int rightDistance = tellRightDistance(startSquare, destinationSquare);
 
         if (type == 'P')
-            return moveValidatePawn(startSquare, destinationSquare, owner);
+            return moveValidatePawn(startSquare, destinationSquare, owner, frontDistance, rightDistance);
         if (type == 'R')
             return moveValidateRook(startSquare, destinationSquare, frontDistance, rightDistance);
         if (type == 'N')
@@ -69,20 +69,16 @@ public class Chessman {
         return type;
     }
 
-    private boolean moveValidatePawn(BoardUnitSquare startSquare, BoardUnitSquare destinationSquare, Player owner) {
+    private boolean moveValidatePawn(BoardUnitSquare startSquare, BoardUnitSquare destinationSquare, Player owner, int frontDistance, int rightDistance) {
         int playerMovingSide = owner.getColor() == 'w' ? 1 : -1;
         if (destinationSquare.getCurrentChessman() == null) {
-            if (movesDone == 0) {
-                if (startSquare.getSquareFrontRow(playerMovingSide).getCurrentChessman() != null) {
-                    return false;
-                }
-                return startSquare.getSquareFrontRow(playerMovingSide) == destinationSquare || startSquare.getSquareFrontRow(playerMovingSide * 2) == destinationSquare;
-            }
-            return startSquare.getSquareFrontRow(playerMovingSide) == destinationSquare;
+            if (startSquare.getSquareFrontRow(playerMovingSide).getCurrentChessman() != null || rightDistance != 0)
+                return false;
+            if (frontDistance == 2 * playerMovingSide)
+                return movesDone == 0;
+            return frontDistance == playerMovingSide;
         }
-        if (startSquare.getSquareFrontRow(playerMovingSide).getSquareRightRow(1) == destinationSquare)
-            return true;
-        return startSquare.getSquareFrontRow(playerMovingSide).getSquareRightRow(-1) == destinationSquare;
+        return (frontDistance == playerMovingSide) && (rightDistance == 1 || rightDistance == -1);
     }
 
     private boolean moveValidateRook(BoardUnitSquare startSquare, BoardUnitSquare destinationSquare, int frontDistance, int rightDistance) {
@@ -123,9 +119,7 @@ public class Chessman {
     private boolean moveValidateQueen(BoardUnitSquare startSquare, BoardUnitSquare destinationSquare, int frontDistance, int rightDistance) {
         if (frontDistance * rightDistance == 0)
             return moveValidateRook(startSquare, destinationSquare, frontDistance, rightDistance);
-        if (frontDistance == rightDistance || frontDistance == -rightDistance)
-            return moveValidateBishop(startSquare, destinationSquare, frontDistance, rightDistance);
-        return false;
+        return moveValidateBishop(startSquare, destinationSquare, frontDistance, rightDistance);
     }
 
     private boolean moveValidateBishop(BoardUnitSquare startSquare, BoardUnitSquare destinationSquare, int frontDistance, int rightDistance) {
