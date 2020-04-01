@@ -85,12 +85,13 @@ public class GameMenu extends Menu {
 
     private void processSelect(String position) {
         String[] posArray = position.split(",");
-        int posX = Integer.parseInt(posArray[0]);
-        int posY = Integer.parseInt(posArray[1]);
-        if (posX > 8 || posX < 1 || posY > 8 || posY < 1) {
+        Pattern positionPattern = Pattern.compile("^[1-8],[1-8]$");
+        if (!positionPattern.matcher(position).find()) {
             System.out.println("wrong coordination");
             return;
         }
+        int posX = Integer.parseInt(posArray[0]);
+        int posY = Integer.parseInt(posArray[1]);
         System.out.println(gameManager.processChessmanSelecting(posX, posY));
     }
 
@@ -99,12 +100,13 @@ public class GameMenu extends Menu {
             System.out.println("already moved");
             return;
         }
-        int destinationX = Integer.parseInt(destinationString.split(",")[0]);
-        int destinationY = Integer.parseInt(destinationString.split(",")[1]);
-        if (destinationX > 8 || destinationX < 1 || destinationY > 8 || destinationY < 1) {
+        Pattern positionPattern = Pattern.compile("^[1-8],[1-8]$");
+        if (!positionPattern.matcher(destinationString).find()) {
             System.out.println("wrong coordination");
             return;
         }
+        int destinationX = Integer.parseInt(destinationString.split(",")[0]);
+        int destinationY = Integer.parseInt(destinationString.split(",")[1]);
         System.out.println(gameManager.processMove(destinationX, destinationY));
     }
 

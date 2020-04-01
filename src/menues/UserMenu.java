@@ -18,8 +18,9 @@ public class UserMenu extends Menu {
         if (splitCommand[0].equals("new_game") && splitCommand.length == 3) {
             Pattern numPattern = Pattern.compile("^-?\\d+$");
             if (numPattern.matcher(splitCommand[2]).find()) {
-                processNewGame(Integer.parseInt(splitCommand[2]), splitCommand[1], splitCommand[2]);
-                System.out.println("new game started successfully between " + activeUser.getUsername() + " and " + splitCommand[1] + " with limit " + splitCommand[2]);
+                if (!processNewGame(Integer.parseInt(splitCommand[2]), splitCommand[1], splitCommand[2]))
+                    return;
+                System.out.println("new game started successfully between " + activeUser.getUsername() + " and " + splitCommand[1] + " with limit " + Integer.parseInt(splitCommand[2]));
                 return;
             }
         }
@@ -50,22 +51,23 @@ public class UserMenu extends Menu {
         }
     }
 
-    private void processNewGame(int limit, String inputUsername, String gameLimit) {
+    private boolean processNewGame(int limit, String inputUsername, String gameLimit) {
         if (User.isUserPassInvalid(inputUsername, "noPass"))
-            return;
+            return false;
         if (Integer.parseInt(gameLimit) < 0) {
             System.out.println("number should be positive to have a limit or 0 for no limit");
-            return;
+            return false;
         }
         if (activeUser.getUsername().equals(inputUsername)) {
             System.out.println("you must choose another player to start a game");
-            return;
+            return false;
         }
         if (!User.userExists(inputUsername)) {
             System.out.println("no user exists with this username");
-            return;
+            return false;
         }
         Menu.setActiveMenu(new GameMenu(activeUser, User.getUserByName(inputUsername), limit));
+        return true;
     }
 
     private static void printHelp() {
